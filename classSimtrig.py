@@ -109,6 +109,17 @@ class sensor():
         t.setFill(self.color)
         t.draw(self.win)
 
+    def click_circle_no_txt(self, click_x, click_y):
+        
+        self.click_x = click_x
+        self.click_y = click_y
+
+        radius = math.sqrt(math.pow((self.x - click_x), 2) + math.pow((self.y - click_y), 2))
+        s = Circle(Point(self.x,self.y), radius)
+        s.setOutline(self.color)
+        s.draw(self.win)
+
+
     
 
 

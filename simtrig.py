@@ -58,6 +58,7 @@ def main():
     parser.add_argument("-m", "--mouse", default=1, type=int, help="For using mouse to get data")
     parser.add_argument("-s", "--socket", default=0, type=int, help="For using socket to get data")
     parser.add_argument("-f", "--file", default="", type=str, help="For using file to get data")
+    parser.add_argument("-tf", "--target_file", default="", type=str, help="File with target data (x and y cordinates)")
 
     parser.add_argument("-wx", "--win_x", default=1000, type=int, help="For defining window size in px on X axis")
     parser.add_argument("-wy", "--win_y", default=700, type=int, help="For defining window size in px on Y axis")
@@ -88,6 +89,9 @@ def main():
     def get_mouse_data():
         while True:
             cp = win.getMouse()
+            print(cp.getX())
+            print(cp.getY())
+
 
             refresh(win_x, win_y, win)
         
@@ -131,8 +135,28 @@ def main():
                 t.sleep(new_speed)
                 refresh(win_x, win_y, win)
 
+    def target_file_data(target_file_dir):
+        new_speed = 1
+        f = open(str(target_file_dir), "r")
 
-    
+        for line in f:
+                new_speed_flg = re.match("speed=", line)
+
+                if new_speed_flg:
+                    speed = re.split("speed=", line)
+                    new_speed = float(speed[1])
+                else:
+                
+                    data = re.split(";", line)
+                    print(int(data[0]))
+                    print(int(data[1]))
+                    s1.click_circle_no_txt(int(data[0]), int(data[1]))
+                    s2.click_circle_no_txt(int(data[0]), int(data[1]))
+                    s3.click_circle_no_txt(int(data[0]), int(data[1]))
+                    t.sleep(new_speed)
+                    refresh(win_x, win_y, win)
+
+
     if (args.target_x == None) & (args.target_y != None):
         print("Missing target_y argument")
 
@@ -144,6 +168,10 @@ def main():
 
     elif (args.file != ""):
         file_data(args.file)
+
+    elif (args.target_file != ""):
+        target_file_data(args.target_file)
+
 
     elif (args.target_x != None) & (args.target_y != None):
         target_data(args.target_x, args.target_y)
