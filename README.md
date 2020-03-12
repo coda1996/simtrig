@@ -22,11 +22,23 @@ This is by default enabled
 -tx=<number of pixels on x axis>
 -ty=<number of pixels on y axis>  
 ```
-### Importing target data from .txt file
+### Importing sensor reading data from .txt file
 ```
 -f=/dir/of/tile.txt
 There is exemple of this file, its caled data.txt
 In this file speed=<num> represents number of seconds between each cycle 
+
+Syntax:
+s1_radius;s2_radius;s3_radius
+```
+### Importing target data from .txt file
+```
+-tf=/dir/of/tile.txt
+There is exemple of this file, its caled target_data.txt
+In this file speed=<num> represents number of seconds between each cycle.
+
+Syntax:
+x_cordinates_of_target;y_cordinates_of_target
 ```
 ### Changing window width(x) and length(y)
 ```

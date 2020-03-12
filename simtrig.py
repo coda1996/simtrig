@@ -5,6 +5,7 @@ import math
 import re
 import classSimtrig
 
+
 def draw_background(win_x, win_y, win):
     backround = Rectangle(Point(30,30), Point(win_x-30, win_y-30))
     backround.setFill(color_rgb(30,30,30))
@@ -40,10 +41,73 @@ def refresh(win_x, win_y, win):
         draw_background(win_x, win_y, win)
         draw_sensors(win)
 
+def get_mouse_data():
+        while True:
+            cp = win.getMouse()
+            refresh(win_x, win_y, win)
+        
+            s1.click_circle(cp.getX(), cp.getY(), cp.getX()+50, cp.getY() - 70)
+            s2.click_circle(cp.getX(), cp.getY(), cp.getX()+100, cp.getY() - 70)
+            s3.click_circle(cp.getX(), cp.getY(), cp.getX()+150, cp.getY() - 70)
+def target_data(x, y):
 
+        s1.click_circle(x, y, x+50, y - 70)
+        s2.click_circle(x, y, x+100, y - 70)
+        s3.click_circle(x, y, x+150, y - 70)
+        
+    
+        
+        
+
+def socket_data():
+    # todo!!!
+    pass
+
+def file_data(file_dir):
+    new_speed = 1
+
+    f = open(str(file_dir), "r")
+    
+    for line in f:
+        new_speed_flg = re.match("speed=", line)
+
+        if new_speed_flg:
+            speed = re.split("speed=", line)
+            new_speed = float(speed[1])
+        else:
+        
+            data = re.split(";", line)
+            refresh(win_x, win_y, win)
+            s1.sensor_radius(int(data[0]))
+            s2.sensor_radius(int(data[1]))
+            s3.sensor_radius(int(data[2]))
+            t.sleep(new_speed)
+            
+
+    get_mouse_data()
+
+def target_file_data(target_file_dir):
+    new_speed = 1
+    f = open(str(target_file_dir), "r")
+
+    for line in f:
+            new_speed_flg = re.match("speed=", line)
+
+            if new_speed_flg:
+                speed = re.split("speed=", line)
+                new_speed = float(speed[1])
+            else:
+                refresh(win_x, win_y, win)
+                data = re.split(";", line)
+                s1.click_circle_no_txt(int(data[0]), int(data[1]))
+                s2.click_circle_no_txt(int(data[0]), int(data[1]))
+                s3.click_circle_no_txt(int(data[0]), int(data[1]))
+                t.sleep(new_speed)
+                
+    get_mouse_data()
 
 def main():
-    global args
+    global args, win, win_x, win_y
 
     parser = argparse.ArgumentParser(description="Quick script")
 
@@ -86,75 +150,9 @@ def main():
         draw_sensors(win)
 
 
-    def get_mouse_data():
-        while True:
-            cp = win.getMouse()
-            print(cp.getX())
-            print(cp.getY())
-
-
-            refresh(win_x, win_y, win)
-        
-            s1.click_circle(cp.getX(), cp.getY(), cp.getX()+50, cp.getY() - 70)
-            s2.click_circle(cp.getX(), cp.getY(), cp.getX()+100, cp.getY() - 70)
-            s3.click_circle(cp.getX(), cp.getY(), cp.getX()+150, cp.getY() - 70)
-
-        
-    def target_data(x, y):
-
-        s1.click_circle(x, y, x+50, y - 70)
-        s2.click_circle(x, y, x+100, y - 70)
-        s3.click_circle(x, y, x+150, y - 70)
-        
     
         
-        
-
-    def socket_data():
-        # todo!!!
-        pass
-
-    def file_data(file_dir):
-        new_speed = 1
-
-        f = open(str(file_dir), "r")
-        
-        for line in f:
-            new_speed_flg = re.match("speed=", line)
-
-            if new_speed_flg:
-                speed = re.split("speed=", line)
-                new_speed = float(speed[1])
-            else:
-            
-                data = re.split(";", line)
-
-                s1.sensor_radius(int(data[0]))
-                s2.sensor_radius(int(data[1]))
-                s3.sensor_radius(int(data[2]))
-                t.sleep(new_speed)
-                refresh(win_x, win_y, win)
-
-    def target_file_data(target_file_dir):
-        new_speed = 1
-        f = open(str(target_file_dir), "r")
-
-        for line in f:
-                new_speed_flg = re.match("speed=", line)
-
-                if new_speed_flg:
-                    speed = re.split("speed=", line)
-                    new_speed = float(speed[1])
-                else:
-                
-                    data = re.split(";", line)
-                    print(int(data[0]))
-                    print(int(data[1]))
-                    s1.click_circle_no_txt(int(data[0]), int(data[1]))
-                    s2.click_circle_no_txt(int(data[0]), int(data[1]))
-                    s3.click_circle_no_txt(int(data[0]), int(data[1]))
-                    t.sleep(new_speed)
-                    refresh(win_x, win_y, win)
+    
 
 
     if (args.target_x == None) & (args.target_y != None):
