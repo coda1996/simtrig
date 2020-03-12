@@ -3,7 +3,7 @@ from graphics import GraphWin, Rectangle, Point, color_rgb
 import argparse
 import math
 import re
-import classSuitcase
+import classSimtrig
 
 def draw_background(win_x, win_y, win):
     backround = Rectangle(Point(30,30), Point(win_x-30, win_y-30))
@@ -14,17 +14,17 @@ def draw_background(win_x, win_y, win):
 def draw_sensors(win):
     global s1, s2, s3
 
-    s1 = classSuitcase.sensor(300, 400, 5, "Green", "s1", win)
-    s2 = classSuitcase.sensor(400, 400, 5, "Red", "s2", win)
-    s3 = classSuitcase.sensor(500, 400, 5, "Yellow", "s3", win)
+    s1 = classSimtrig.sensor(300, 400, 5, "Green", "s1", win)
+    s2 = classSimtrig.sensor(400, 400, 5, "Red", "s2", win)
+    s3 = classSimtrig.sensor(500, 400, 5, "Yellow", "s3", win)
 
 
 def draw_sensors_with_distance_on_x_axis(x, y, d, win):
     global s1, s2, s3, draw_sensors_with_distance_on_x_axis_flg
 
-    s1 = classSuitcase.sensor(x, y, 5, "Green", "s1", win)
-    s2 = classSuitcase.sensor(x+d, y, 5, "Red", "s2", win)
-    s3 = classSuitcase.sensor(x+d+d, y, 5, "Yellow", "s3", win)
+    s1 = classSimtrig.sensor(x, y, 5, "Green", "s1", win)
+    s2 = classSimtrig.sensor(x+d, y, 5, "Red", "s2", win)
+    s3 = classSimtrig.sensor(x+d+d, y, 5, "Yellow", "s3", win)
     draw_sensors_with_distance_on_x_axis_flg = 1
 
 def refresh(win_x, win_y, win):
@@ -74,8 +74,8 @@ def main():
     axis_width = args.axis_width
 
 
-    win = GraphWin("SuitcaseSim", win_x, win_y)
-    classSuitcase.start(win_x, win_y, axis_width,win)
+    win = GraphWin("SimTrig", win_x, win_y)
+    classSimtrig.start(win_x, win_y, axis_width,win)
     
     draw_background(win_x, win_y, win)
 
