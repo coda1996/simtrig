@@ -1,15 +1,22 @@
 import time as t
-from graphics import GraphWin, Rectangle, Point, color_rgb
+from graphics import GraphWin, Rectangle, Point, color_rgb, Line, Text
 import argparse
 import math
 import re
 import classSimtrig
 
 
-def draw_background(win_x, win_y, win):
-    backround = Rectangle(Point(30,30), Point(win_x-30, win_y-30))
-    backround.setFill(color_rgb(30,30,30))
-    backround.draw(win)
+def draw_background(win_x, win_y, win, axis_flg):
+    if (axis_flg != 1):
+        backround = Rectangle(Point(0,0), Point(win_x, win_y))
+        backround.setFill(color_rgb(30,30,30))
+        backround.draw(win)
+    else:
+
+        backround = Rectangle(Point(10,10), Point(win_x, win_y))
+        backround.setFill(color_rgb(30,30,30))
+        backround.draw(win)
+
 
 
 def draw_sensors(win):
@@ -29,16 +36,16 @@ def draw_sensors_with_distance_on_x_axis(x, y, d, win):
     draw_sensors_with_distance_on_x_axis_flg = 1
 
 def refresh(win_x, win_y, win):
-    #global draw_sensors_with_distance_on_x_axis_flg
+    
     try:
         if (draw_sensors_with_distance_on_x_axis_flg != 1):
-            draw_background(win_x, win_y, win)
+            draw_background(win_x, win_y, win, axis_flg)
             draw_sensors(win)
         else:
-            draw_background(win_x, win_y, win)
+            draw_background(win_x, win_y, win, axis_flg)
             draw_sensors_with_distance_on_x_axis(args.sensor_start_x, args.sensor_start_y, args.distance, win)
     except NameError:
-        draw_background(win_x, win_y, win)
+        draw_background(win_x, win_y, win, axis_flg)
         draw_sensors(win)
 
 def get_mouse_data():
@@ -103,11 +110,12 @@ def target_file_data(target_file_dir):
                 s2.click_circle_no_txt(int(data[0]), int(data[1]))
                 s3.click_circle_no_txt(int(data[0]), int(data[1]))
                 t.sleep(new_speed)
+               
                 
     get_mouse_data()
 
 def main():
-    global args, win, win_x, win_y
+    global args, win, win_x, win_y, axis_width, axis_flg
 
     parser = argparse.ArgumentParser(description="Quick script")
 
@@ -129,6 +137,8 @@ def main():
 
     parser.add_argument("-aw", "--axis_width", default=2, type=int, help="For defining window size in px on Y axis")
 
+    parser.add_argument("-a", "--axis", default=0, type=int, help="For choosing if you want axis or not")
+
     args = parser.parse_args()
 
 
@@ -138,21 +148,19 @@ def main():
 
     axis_width = args.axis_width
 
+    axis_flg = args.axis
 
-    win = GraphWin("SimTrig", win_x, win_y)
+
+    win = GraphWin("SimTrig", win_x, win_y, autoflush=True)
+    draw_background(win_x, win_y, win, draw_background)
     classSimtrig.start(win_x, win_y, axis_width,win)
     
-    draw_background(win_x, win_y, win)
+    
 
     if(args.distance != None):
         draw_sensors_with_distance_on_x_axis(args.sensor_start_x, args.sensor_start_y, args.distance, win)
     else:
-        draw_sensors(win)
-
-
-    
-        
-    
+        draw_sensors(win)  
 
 
     if (args.target_x == None) & (args.target_y != None):
