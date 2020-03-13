@@ -56,7 +56,6 @@ x_cordinates_of_target;y_cordinates_of_target
 ```
 -a=1 axis is enabled and shown
 -a=0 axis is disabled and not shown (Default)
-
 ```
 You can edit simtrig.py for placing more sensors and for changing x and y position of each sensor
 
