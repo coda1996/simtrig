@@ -51,6 +51,13 @@ x_cordinates_of_target;y_cordinates_of_target
 -sy=<Number of pixels on y axis where the sensors will start>
 -d=<number of pixels between the sensors>
 ```
+
+### For enabiling and disabling axis view
+```
+-a=1 axis is enabled and shown
+-a=0 axis is disabled and not shown (Default)
+
+```
 You can edit simtrig.py for placing more sensors and for changing x and y position of each sensor
 
 
