@@ -27,7 +27,7 @@ This is by default enabled.
 ```
 -f=/dir/of/tile.txt
 ```
-There is exemple of this file, its called data.txt.
+There is exemple of this file, its called ```data.txt```.
 In this file ```speed=num``` represents number of seconds between each cycle.
 
 Syntax:
@@ -39,7 +39,7 @@ s1_radius;s2_radius;s3_radius
 ```
 -tf=/dir/of/tile.txt
 ```
-There is exemple of this file, its called target_data.txt.
+There is exemple of this file, its called ```target_data.txt```.
 In this file speed=<num> represents number of seconds between each cycle.
 
 Syntax:
