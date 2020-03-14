@@ -95,12 +95,13 @@ def file_data(file_dir):
         else:
         
             data = re.split(";", line)
-            refresh(win_x, win_y, win)
+            
             s1.sensor_radius(int(data[0]))
             s2.sensor_radius(int(data[1]))
             s3.sensor_radius(int(data[2]))
-            win.update()
+            refresh(win_x, win_y, win)
             t.sleep(new_speed)
+            refresh(win_x, win_y, win)
             
 
     get_mouse_data()
