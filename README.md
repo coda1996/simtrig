@@ -15,8 +15,9 @@ pip install graphics.py
 ### Using mouse clicks
 ```
 -m=1
-This is by default enabled
 ```
+This is by default enabled
+
 ### Entering target position manualy
 ```
 -tx=<number of pixels on x axis>
@@ -25,21 +26,23 @@ This is by default enabled
 ### Importing sensor reading data from .txt file
 ```
 -f=/dir/of/tile.txt
+```
 There is exemple of this file, its caled data.txt
-In this file speed=<num> represents number of seconds between each cycle 
+In this file ```speed=num``` represents number of seconds between each cycle 
 
 Syntax:
 s1_radius;s2_radius;s3_radius
-```
+
 ### Importing target data from .txt file
 ```
 -tf=/dir/of/tile.txt
+```
 There is exemple of this file, its caled target_data.txt
 In this file speed=<num> represents number of seconds between each cycle.
 
 Syntax:
 x_cordinates_of_target;y_cordinates_of_target
-```
+
 ### Changing window width(x) and length(y)
 ```
 -wx=<number of pixels for x axis>
@@ -52,11 +55,28 @@ x_cordinates_of_target;y_cordinates_of_target
 -d=<number of pixels between the sensors>
 ```
 
-### For enabiling and disabling axis view
+### For enabiling and disabling axis drawing
 ```
 -a=1 axis is enabled and shown
 -a=0 axis is disabled and not shown (Default)
 ```
 You can edit simtrig.py for placing more sensors and for changing x and y position of each sensor
+
+### For generating output file
+```
+-o=out_file.txt
+```
+With this you can draw path and it will be generated in file that is specifide
+Speed in this file will be by default 0.1
+
+After generating this file you can feed it to simulation by using ```-tf=out.txt``` flag
+
+### Contact circle
+```
+-cc=num
+```
+If set to 1 will generate circle where there is contact 
+This is by default set to 1
+
 
 

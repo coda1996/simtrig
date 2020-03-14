@@ -1,5 +1,5 @@
 import time as t
-from graphics import GraphWin, Rectangle, Point, color_rgb, Line, Text
+from graphics import GraphWin, Rectangle, Point, color_rgb, Line, Text, Circle
 import argparse
 import math
 import re
@@ -16,6 +16,7 @@ def draw_background(win_x, win_y, win, axis_flg):
         backround = Rectangle(Point(10,10), Point(win_x, win_y))
         backround.setFill(color_rgb(30,30,30))
         backround.draw(win)
+    #win.update()
 
 
 
@@ -25,6 +26,7 @@ def draw_sensors(win):
     s1 = classSimtrig.sensor(300, 400, 5, "Green", "s1", win)
     s2 = classSimtrig.sensor(400, 400, 5, "Red", "s2", win)
     s3 = classSimtrig.sensor(500, 400, 5, "Yellow", "s3", win)
+    #win.update()
 
 
 def draw_sensors_with_distance_on_x_axis(x, y, d, win):
@@ -34,6 +36,7 @@ def draw_sensors_with_distance_on_x_axis(x, y, d, win):
     s2 = classSimtrig.sensor(x+d, y, 5, "Red", "s2", win)
     s3 = classSimtrig.sensor(x+d+d, y, 5, "Yellow", "s3", win)
     draw_sensors_with_distance_on_x_axis_flg = 1
+    #win.update()
 
 def refresh(win_x, win_y, win):
     
@@ -47,6 +50,7 @@ def refresh(win_x, win_y, win):
     except NameError:
         draw_background(win_x, win_y, win, axis_flg)
         draw_sensors(win)
+    win.update()
 
 def get_mouse_data():
         while True:
@@ -56,11 +60,18 @@ def get_mouse_data():
             s1.click_circle(cp.getX(), cp.getY(), cp.getX()+50, cp.getY() - 70)
             s2.click_circle(cp.getX(), cp.getY(), cp.getX()+100, cp.getY() - 70)
             s3.click_circle(cp.getX(), cp.getY(), cp.getX()+150, cp.getY() - 70)
+            if (args.contact_circle == 1):
+                contact_circle(cp.getX(), cp.getY())
+            #win.update()
 def target_data(x, y):
 
         s1.click_circle(x, y, x+50, y - 70)
         s2.click_circle(x, y, x+100, y - 70)
         s3.click_circle(x, y, x+150, y - 70)
+        if (args.contact_circle == 1):
+            contact_circle(x, y)
+
+        #win.update()
         
     
         
@@ -88,6 +99,7 @@ def file_data(file_dir):
             s1.sensor_radius(int(data[0]))
             s2.sensor_radius(int(data[1]))
             s3.sensor_radius(int(data[2]))
+            win.update()
             t.sleep(new_speed)
             
 
@@ -109,10 +121,56 @@ def target_file_data(target_file_dir):
                 s1.click_circle_no_txt(int(data[0]), int(data[1]))
                 s2.click_circle_no_txt(int(data[0]), int(data[1]))
                 s3.click_circle_no_txt(int(data[0]), int(data[1]))
+                
+                if (args.contact_circle == 1):
+                    contact_circle(int(data[0]), int(data[1]))
                 t.sleep(new_speed)
+
                
                 
     get_mouse_data()
+
+
+def draw_path(output_file):
+    f = open(str(output_file), "w")
+
+    cp1 = win.getMouse()
+    p = Circle(Point(cp1.getX(), cp1.getY()), 3)
+    p.setFill("Yellow")
+    p.draw(win)
+
+    cp_start_x = cp1.getX()
+    cp_start_y = cp1.getY()
+
+    f.write("speed=0.1\n")
+    f.write(str(int(cp1.getX())) + ";" + str(int(cp1.getY())) + "\n")
+    while True:
+        try:
+            cp2 = win.getMouse()
+            f.write(str(int(cp2.getX())) + ";" + str(int(cp2.getY())) + "\n")
+            p = Circle(Point(cp2.getX(), cp2.getY()), 3)
+            p.setFill("Yellow")
+            p.draw(win)
+
+            l = Line(Point(cp_start_x, cp_start_y), Point(cp2.getX(), cp2.getY()))
+            l.setFill("Red")
+            l.draw(win)
+
+            cp_start_x = cp2.getX()
+            cp_start_y = cp2.getY()
+        except KeyboardInterrupt:
+            f.close()
+            print("done")
+            break
+            
+    
+def contact_circle(x, y):
+    c = Circle(Point(x, y), 5)
+    c.setFill("Red")
+    c.draw(win)
+    win.update()
+
+
 
 def main():
     global args, win, win_x, win_y, axis_width, axis_flg
@@ -139,6 +197,11 @@ def main():
 
     parser.add_argument("-a", "--axis", default=0, type=int, help="For choosing if you want axis or not")
 
+    parser.add_argument("-o", "--output", default="", type=str, help="For choosing output file")
+
+
+    parser.add_argument("-cc", "--contact_circle", default=1, type=int, help="For choosing if you want contact circle")
+
     args = parser.parse_args()
 
 
@@ -151,7 +214,7 @@ def main():
     axis_flg = args.axis
 
 
-    win = GraphWin("SimTrig", win_x, win_y, autoflush=True)
+    win = GraphWin("SimTrig", win_x, win_y, autoflush=False)
     draw_background(win_x, win_y, win, draw_background)
     classSimtrig.start(win_x, win_y, axis_width,win)
     
@@ -182,6 +245,9 @@ def main():
     elif (args.target_x != None) & (args.target_y != None):
         target_data(args.target_x, args.target_y)
         get_mouse_data()
+
+    elif (args.output != ""):
+        draw_path(args.output)
 
     else:
         get_mouse_data()
